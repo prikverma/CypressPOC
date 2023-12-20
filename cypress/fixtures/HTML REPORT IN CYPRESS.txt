@@ -1,0 +1,24 @@
+Using Cypress MochaAwesome reporter: https://www.npmjs.com/package/cypress-mochawesome-reporter
+
+1) npm i --save-dev cypress-mochawesome-reporter
+
+2) Changing cypress reporter 7 setup hooks
+
+Edit config file( cypress.config.js by default)
+  
+const { defineConfig } = require("cypress");
+ module.exports = defineConfig({
+reporter: 'cypress-mochawesome-reporter', // for html report
+e2e:
+{
+setupNodeEvents(on, config){
+//implement node event listeners here
+require('cypress-mochawesome-reporter/plugin')(on); // for html reports
+  },
+},
+});
+
+3) Add to cypress/support/e2e.js
+
+import 'cypress-mochawesome-reporter/register';
+
