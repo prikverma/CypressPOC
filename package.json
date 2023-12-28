@@ -4,7 +4,11 @@
   "description": "POC",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules\\.bin\\cypress run",
+    "headTest": "npm run test -- --headed",
+    "headlessTest": "npm run test -- --headless",
+    "chromeTest": "npm run headTest -- --browser chrome",
+    "recordDashboardTest": "npm run test -- --record --key 53ea000c-3408-445e-bb76-3671bdf3c920 --reporter mochawesome"
   },
   "repository": {
     "type": "git",
@@ -18,6 +22,7 @@
   "homepage": "https://github.com/prikverma/CypressPOC#readme",
   "devDependencies": {
     "cypress": "^13.6.1",
+    "cypress-downloadfile": "^1.2.3",
     "cypress-mochawesome-reporter": "^3.7.0"
   }
 }
