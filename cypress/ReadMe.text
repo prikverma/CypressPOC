@@ -1,2 +1,3 @@
 in order to run and record the output use this
+npx cypress run --record --key 53ea000c-3408-445e-bb76-3671bdf3c920 
 npx cypress run --record --key 53ea000c-3408-445e-bb76-3671bdf3c920 --reporter mochawesome

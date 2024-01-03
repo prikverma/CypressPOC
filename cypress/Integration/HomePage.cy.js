@@ -74,15 +74,16 @@ describe("Test Suite", function () {
         //Click on 'Signup / Login' button
         cy.get("a[href='/login']").click()
         cy.get("div[class='login-form']>h2").should("be.visible").and("have.text", "Login to your account")
-        cy.get("input[data-qa='login-email']").type("pverma12@gmail.com")
+        cy.get("input[data-qa='login-email']").type("pvermat12@gmail.com")
         cy.get("input[data-qa='login-password']").type("Prik@123")
         cy.get("button[data-qa='login-button']").click()
-        cy.get("div>ul >li:nth-child(10)>a").should("be.visible").and("have.text", ' Logged in as PVerma')
-        cy.get('.shop-menu > .nav > :nth-child(5) > a').click()
-        cy.get("div>h2>b").should("be.visible").and("have.text", "Account Deleted!")
-        cy.get("div>a[class='btn btn-primary']").click().then(function () {
-            cy.log("Account Deleted Successfully")
-        })
+        cy.get("div>ul >li:nth-child(10)>a").should("be.visible").and("have.text", ' Logged in as Pverma')
+        //Account deleted 
+        // cy.get('.shop-menu > .nav > :nth-child(5) > a').click()
+        // cy.get("div>h2>b").should("be.visible").and("have.text", "Account Deleted!")
+        // cy.get("div>a[class='btn btn-primary']").click().then(function () {
+        //     cy.log("Account Deleted Successfully")
+        // })
 
 
     })
@@ -126,8 +127,8 @@ describe("Test Suite", function () {
         // Verify 'New User Signup!' is visible
         cy.get("div[class='signup-form'] h2").and("have.text", "New User Signup!")
         //Enter name and email address and click on signup button
-        cy.get("input[type='text']").type("PVerma")
-        cy.get("input[data-qa='signup-email']").type("pverma12@gmail.com")
+        cy.get("input[type='text']").type("Pverma")
+        cy.get("input[data-qa='signup-email']").type("pverma@gmail.com")
         cy.get('[data-qa="signup-button"]').click()
         cy.get("p:nth-child(5)").should("have.text", "Email Address already exist!").and("be.visible")
     })
@@ -446,7 +447,7 @@ describe("Test Suite", function () {
         cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
         cy.get(".btn.btn-primary").click()
     })
-    it("16: Place Order: Login before Checkout", function () {
+    it.only("16: Place Order: Login before Checkout", function () {
         //home page visibility
         cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
         cy.get("a[href='/login']").click()
@@ -559,7 +560,7 @@ describe("Test Suite", function () {
         cy.get("#submit_search").click()
         cy.get(".title.text-center").should("have.text", "Searched Products")
         cy.wait(2000)
-        cy.get('.productinfo.text-center a').each(($el, index, $list) => {
+        cy.get('.productinfo.text-center a').each(($el) => {
             var searchText = $el.text()
             if (searchText.includes("Top")) {
                 cy.get($el).click({ multiple: true })
@@ -581,7 +582,7 @@ describe("Test Suite", function () {
         cy.get("div[class='alert-success alert'] span").invoke("show").should("have.text", "Thank you for your review.")
 
     })
-    it.only("22: Add to cart from Recommended items", function () {
+    it("22: Add to cart from Recommended items", function () {
         cy.scrollTo('bottom')
         cy.get("div[class='recommended_items'] h2[class='title text-center']").should("be.visible").and("have.text", "recommended items")
         //Cliking on first product on window
@@ -649,80 +650,107 @@ describe("Test Suite", function () {
         cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
         cy.get(".btn.btn-primary").click()
     })
-    // it.skip("24: Verify address details in checkout page", function () {
-    //     //Home page visible
-    //     cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
+    it("24: Verify address details in checkout page", function () {
+        //Home page visible
+        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
 
-    //     cy.get("h2[class='title text-center']").invoke("show").then(() => {
-    //         cy.get(" div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(3)").click({ force: true })
-    //     })
-    //     cy.get(" a:nth-child(1) > u:nth-child(1)").click()
-    //     cy.url().should("include", "/view_cart").then(() => {
-    //         cy.log("You are ar cart page")
-    //     })
-    //     cy.get(".btn.btn-default.check_out").click()
-    //     cy.get("a:nth-child(1) > u:nth-child(1)").click()
-    //     // account creation 
-    //     cy.get("input[placeholder='Name']").type("PVerma")
-    //     cy.get("input[data-qa='signup-email']").type("pvermatest18@gmail.com")
-    //     cy.get("button[data-qa='signup-button']").click({ multiple: true })
-    //     cy.get('#id_gender1').check().should("be.checked")
-    //     cy.get('#password').type("Prik@123")
-    //     cy.get("select[id='days']").select("8")
-    //     cy.get("div[id='uniform-months'] > select").select("January")
-    //     cy.get("div[id='uniform-years'] > select").select("1994")
-    //     cy.get("#newsletter").check().should("be.checked")
-    //     cy.get("#optin").check().should("be.checked")
-    //     cy.get("#first_name").type("Prikshit")
-    //     cy.get("#last_name").type("Verma")
-    //     cy.get("#company").type("P.S. Intelegencia Analytics Pvt. Ltd.")
-    //     cy.get("#address1").type("135 New Mohanpura")
-    //     cy.get("#address2").type("CCS Colony")
-    //     //dropdown select India
-    //     cy.get("#country").each(($el) => {
+        cy.get("h2[class='title text-center']").invoke("show").then(() => {
+            cy.get(" div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(3)").click({ force: true })
+        })
+        cy.get(" a:nth-child(1) > u:nth-child(1)").click()
+        cy.url().should("include", "/view_cart").then(() => {
+            cy.log("You are ar cart page")
+        })
+        cy.get(".btn.btn-default.check_out").click()
+        cy.get("a:nth-child(1) > u:nth-child(1)").click()
+        // account creation 
+        cy.get("input[placeholder='Name']").type("PVerma")
+        cy.get("input[data-qa='signup-email']").type("pvermatest24@gmail.com")
+        cy.get("button[data-qa='signup-button']").click({ multiple: true })
+        cy.get('#id_gender1').check().should("be.checked")
+        cy.get('#password').type("Prik@123")
+        cy.get("select[id='days']").select("8")
+        cy.get("div[id='uniform-months'] > select").select("January")
+        cy.get("div[id='uniform-years'] > select").select("1994")
+        cy.get("#newsletter").check().should("be.checked")
+        cy.get("#optin").check().should("be.checked")
+        cy.get("#first_name").type("Prikshit")
+        cy.get("#last_name").type("Verma")
+        cy.get("#company").type("P.S. Intelegencia Analytics Pvt. Ltd.")
+        cy.get("#address1").type("135 New Mohanpura")
+        cy.get("#address2").type("CCS Colony")
+        //dropdown select India
+        cy.get("#country").each(($el) => {
 
-    //         if ($el.text === "India") {
-    //             cy.wrap($el).select()
-    //         }
-    //     })
+            if ($el.text === "India") {
+                cy.wrap($el).select()
+            }
+        })
 
-    //     cy.get("#state").type("Uttarakhand")
-    //     cy.get("#city").type("Roorkee")
-    //     cy.get("#zipcode").type("201306")
-    //     cy.get("#mobile_number").type("12345678")
-    //     cy.get('[data-qa="create-account"]').click()
-    //     cy.get('b').should("be.visible").and("have.text", "Account Created!")
-    //     cy.get('[data-qa="continue-button"]').click()
-    //     cy.get("ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)").eq(0).click()
-    //     cy.get(".btn.btn-default.check_out").click()
-    //     cy.get('#address_delivery > :nth-child(4)').then((address) => {
-    //         var addresstext1 = address.text()
-    //         expect(addresstext1).include("135 New Mohanpura")
-    //     })
-    //     cy.get("a[href='/product_details/1']").should("have.text", "Blue Top").then(() => {
-    //         cy.log("Order reviewed")
-    //     })
-    //     cy.get("textarea[name='message']").type("This is my order using Cypress Automation")
-    //     cy.get(".btn.btn-default.check_out").click()
-    //     cy.get("input[name='name_on_card']").type("Prikshit")
-    //     cy.get("input[name='card_number']").type("1234 45677 4342")
-    //     cy.get("input[placeholder='ex. 311']").clear().type("213")
-    //     cy.get("input[placeholder='MM']").clear().type("08")
-    //     cy.get("input[placeholder='YYYY']").clear().type("2025")
-    //     cy.get("#submit").click().then(() => {
-    //         cy.wait(2000)
+        cy.get("#state").type("Uttarakhand")
+        cy.get("#city").type("Roorkee")
+        cy.get("#zipcode").type("201306")
+        cy.get("#mobile_number").type("12345678")
+        cy.get('[data-qa="create-account"]').click()
+        cy.get('b').should("be.visible").and("have.text", "Account Created!")
+        cy.get('[data-qa="continue-button"]').click()
+        cy.get("ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)").eq(0).click()
+        cy.get(".btn.btn-default.check_out").click()
+        cy.get('#address_delivery > :nth-child(4)').then((address) => {
+            var addresstext1 = address.text()
+            expect(addresstext1).include("135 New Mohanpura")
+        })
+        cy.get("a[href='/product_details/1']").should("have.text", "Blue Top").then(() => {
+            cy.log("Order reviewed")
+        })
+        cy.get("textarea[name='message']").type("This is my order using Cypress Automation")
+        cy.get(".btn.btn-default.check_out").click()
+        cy.get("input[name='name_on_card']").type("Prikshit")
+        cy.get("input[name='card_number']").type("1234 45677 4342")
+        cy.get("input[placeholder='ex. 311']").clear().type("213")
+        cy.get("input[placeholder='MM']").clear().type("08")
+        cy.get("input[placeholder='YYYY']").clear().type("2025")
+        cy.get("#submit").click().then(() => {
+            cy.wait(2000)
 
-    //     })
-    //     cy.get(".container .row div[class='col-sm-9 col-sm-offset-1'] p").should("include.text", "Congratulations! Your order has been confirmed!")
-    //     cy.downloadFile('"https://automationexercise.com/download_invoice/2500"', 'Downloads', 'invoice.txt')
-    //     cy.readFile("./Downloads/invoice.txt").should('contain', 'Hi Prikshit Verma,')
-    //     cy.get('.col-sm-9 > .btn-default').click()
+        })
+        cy.get(".container .row div[class='col-sm-9 col-sm-offset-1'] p").should("include.text", "Congratulations! Your order has been confirmed!")
 
-    //     //Delete account test cases
-    //     cy.get("a[href='/delete_account']").click()
-    //     cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
-    //     cy.get(".btn.btn-primary").click()
+        cy.get('.col-sm-9 > .btn-default').click().then(() => {
+            cy.readFile("cypress/downloads/invoice.txt").should('contain', 'Hi Prikshit Verma, Your total purchase amount is 500. Thank you')
+        })
 
-    // })
+        cy.get('.col-sm-9 > .btn-default').click()
+
+        //Delete account test cases
+        cy.get("a[href='/delete_account']").click()
+        cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
+        cy.get(".btn.btn-primary").click()
+
+    })
+
+    it("25: Verify Scroll Up using 'Arrow' button and Scroll Down functionality", function () {
+        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
+        cy.scrollTo('bottom')
+        cy.get("div[class='single-widget'] h2").should("have.text", "Subscription")
+        cy.get(".fa.fa-angle-up").click()
+        cy.window().its("scrollY").should("eq", 0).then(() => {
+            cy.log("page is scrolled up")
+        });
+        cy.get("div[class='item active'] div[class='col-sm-6'] h2").should("have.text", "Full-Fledged practice website for Automation Engineers")
+
+    })
+
+    it("26: Verify Scroll Up without 'Arrow' button and Scroll Down functionality", function () {
+        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
+        cy.scrollTo('bottom')
+        cy.get("div[class='single-widget'] h2").should("have.text", "Subscription")
+        cy.scrollTo('top')
+        cy.window().its("scrollX").should("eq", 0).then(() => {
+            cy.log("page is scrolled up")
+        })
+        cy.get("div[class='item active'] div[class='col-sm-6'] h2").should("have.text", "Full-Fledged practice website for Automation Engineers")
+
+    })
 })
 
