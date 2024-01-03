@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 
 describe("Test Suite", function () {
-    let length
+
     let Price1
     let Price2
     let quantity1
@@ -447,7 +447,7 @@ describe("Test Suite", function () {
         cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
         cy.get(".btn.btn-primary").click()
     })
-    it.only("16: Place Order: Login before Checkout", function () {
+    it("16: Place Order: Login before Checkout", function () {
         //home page visibility
         cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
         cy.get("a[href='/login']").click()
