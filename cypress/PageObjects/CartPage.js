@@ -23,5 +23,13 @@ class CartPage {
     getRegisterLoginButtonOnPrompt() {
         return cy.get("a:nth-child(1) > u:nth-child(1)").click()
     }
+    getRemoveProductButton() {
+        return cy.get(".fa.fa-times").click()
+    }
+    verifyProductRemovedFromCart() {
+        return cy.get(".fa.fa-times").should("not.exist").then(() => {
+            cy.log("Product has been removed from cart")
+        })
+    }
 }
 export default CartPage;

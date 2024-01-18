@@ -10,6 +10,8 @@ import ProducstDetailsPage from "../PageObjects/ProductDetailsPage"
 import CartPage from "../PageObjects/CartPage"
 import CheckoutPage from "../PageObjects/CheckoutPage"
 import PaymentPage from "../PageObjects/PaymentPage"
+import OrderPlacePage from "../PageObjects/OrderPlacePage"
+
 describe("Test Suite", function () {
 
 
@@ -23,7 +25,7 @@ describe("Test Suite", function () {
     const cartpage = new CartPage()
     const checkoutpage = new CheckoutPage()
     const payment = new PaymentPage()
-
+    const orderplace = new OrderPlacePage()
     beforeEach(function () {
         cy.visit("https://automationexercise.com/")
     })
@@ -66,7 +68,7 @@ describe("Test Suite", function () {
         signup.verifyAccoutCreatedText()
         signup.getAccountCreatedContinueButton()
         //home page elements
-        home.verifyLoginAsText()
+        home.verifyLoginAsText().and("have.text", ' Logged in as PVerma')
         //account Delete button
         home.getDeleteAccountButton()
         //Account Delete text
@@ -232,7 +234,7 @@ describe("Test Suite", function () {
         products.verifyIncreaseProductsQuantity()
 
     })
-    it.only("14: Place Order: Register while Checkout", function () {
+    it("14: Place Order: Register while Checkout", function () {
         // Verify home page visibility
         home.verifyHomePageVisibility()
         //add item 2nd to the cart
@@ -270,8 +272,8 @@ describe("Test Suite", function () {
         signup.getCreateAccountButton()
         signup.verifyAccoutCreatedText()
         signup.getAccountCreatedContinueButton()
-        //loggedin
-        home.verifyLoginAsText()
+        //
+        home.verifyLoginAsText().and("have.text", ' Logged in as PVerma')
         home.getCartButton()
         //clickproceed to buy
         cartpage.getProceedToCheckoutButton()
@@ -298,150 +300,109 @@ describe("Test Suite", function () {
     })
     it("15: Place Order: Register before Checkout", function () {
         // Verify home page visibility
-        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
-        cy.get(" ul.nav.navbar-nav li:nth-child(4) > a:nth-child(1)").click()
-        cy.get("input[type='text']").type("PVerma")
-        cy.get("input[data-qa='signup-email']").type("pvermatest6@gmail.com")
-        cy.get("button[data-qa='signup-button']").click({ multiple: true })
-        cy.get('#id_gender1').check().should("be.checked")
-        cy.get('#password').type("Prik@123")
-        cy.get("select[id='days']").select("8")
-        cy.get("div[id='uniform-months'] > select").select("January")
-        cy.get("div[id='uniform-years'] > select").select("1994")
-        cy.get("#newsletter").check().should("be.checked")
-        cy.get("#optin").check().should("be.checked")
-        cy.get("#first_name").type("Prikshit")
-        cy.get("#last_name").type("Verma")
-        cy.get("#company").type("P.S. Intelegencia Analytics Pvt. Ltd.")
-        cy.get("#address1").type("135 New Mohanpura")
-        cy.get("#address2").type("CCS Colony")
+        home.verifyHomePageVisibility()
+
+        home.getSignupLoginButton()
+        login.getSignupName("PVerma")
+        login.getSignupEmail("pvermatest1390@gmail.com")
+        login.getSignupButton()
+        signup.getTitle()
+        signup.getPassword("Prik@123")
+        signup.getDay("8")
+        signup.getMonth("January")
+        signup.getYear("1994")
+        signup.getNewsletterCheckbox()
+        signup.getSpecialoffersCheckbox()
+        signup.getFirstname("Prikshit")
+        signup.getLastname("Verma")
+        signup.getCompanyName("P.S. Intelegencia Analytics Pvt. Ltd.")
+        signup.getAddress1("135 New Mohanpura")
+        signup.getAddress2("CCS Colony")
         //dropdown select India
-        cy.get("#country").each(($el) => {
+        signup.getCountryDropdown()
 
-            if ($el.text === "India") {
-                cy.wrap($el).select()
-            }
-        })
+        signup.getState("Uttarakhand")
+        signup.getCity("Roorkee")
+        signup.getZipcode("201306")
+        signup.getMobilenumber("12345678")
+        signup.getCreateAccountButton()
+        signup.verifyAccoutCreatedText()
+        signup.getAccountCreatedContinueButton()
 
-        cy.get("#state").type("Uttarakhand")
-        cy.get("#city").type("Roorkee")
-        cy.get("#zipcode").type("201306")
-        cy.get("#mobile_number").type("12345678")
-        cy.get('[data-qa="create-account"]').click()
-        cy.get('b').should("be.visible").and("have.text", "Account Created!")
-        cy.get('[data-qa="continue-button"]').click()
-        cy.get("div>ul >li:nth-child(10)>a").should("be.visible").and("have.text", ' Logged in as PVerma')
-        //add product to the cart
-        cy.get("h2[class='title text-center']").invoke("show").then(() => {
-            cy.get(" div.col-sm-4:nth-child(4) div.product-image-wrapper div.single-products div.product-overlay div.overlay-content > a.btn.btn-default.add-to-cart:nth-child(3)").click({ force: true })
-
-
-        })
-        cy.get("a:nth-child(1) > u:nth-child(1)").click()
-        cy.url().should("include", "/view_cart").then(() => {
-            cy.log("You are at view cart page")
-        })
-        cy.get('.shop-menu > .nav > :nth-child(3) > a').click()
-        cy.get('.col-sm-6 > .btn').click()
-        cy.get('#address_delivery > :nth-child(4)').then((address) => {
-            var addresstext = address.text()
-            expect(addresstext).include("135 New Mohanpura")
-        })
-        cy.get("#product-2").should("contain.text", "Men Tshirt")
+        home.verifyLoginAsText().and("have.text", ' Logged in as PVerma')
+        //add product2 to the cart
+        products.addSecondItemToTheCart()
+        home.getCartButton()
+        cartpage.verifyViewCartPageNavigation()
+        cartpage.getProceedToCheckoutButton()
+        checkoutpage.verifyAddress()
+        checkoutpage.verifyProduct2Order()
         //Enter in Text area
-        cy.get("textarea[name='message']").type("This is my order using Cypress Automation")
-        cy.get(".btn.btn-default.check_out").click()
-        cy.get("input[name='name_on_card']").type("Prikshit")
-        cy.get("input[name='card_number']").type("1234 45677 4342")
-        cy.get("input[placeholder='ex. 311']").clear().type("213")
-        cy.get("input[placeholder='MM']").clear().type("08")
-        cy.get("input[placeholder='YYYY']").clear().type("2025")
-        cy.get("#submit").click().then(() => {
-            cy.wait(500)
-
-        })
-
-        cy.get(".container .row div[class='col-sm-9 col-sm-offset-1'] p").should("include.text", "Congratulations! Your order has been confirmed!")
-        cy.get("a[href='/delete_account']").click()
-        cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
-        cy.get(".btn.btn-primary").click()
+        checkoutpage.getOrderDescriptionBox("This is my order using Cypress Automation")
+        checkoutpage.getPlaceOrderButton()
+        payment.getNameOnCard("Prikshit")
+        payment.getCardNumber("1234 45677 4342")
+        payment.getCVV("213")
+        payment.getExpirationDate("08")
+        payment.getExpirationYear("2025")
+        payment.getPayAndConfirmOrderButton()
+        payment.verifyOrderConfirmationText()
+        //delete account
+        home.getDeleteAccountButton()
+        home.verifyAccountDeleteText()
+        home.getAccountDeleteContinueButton()
     })
     it("16: Place Order: Login before Checkout", function () {
         //home page visibility
-        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
-        cy.get("a[href='/login']").click()
-        cy.get("input[data-qa='login-email']").type("pvermatt1@gmail.com")
-        cy.get("input[placeholder='Password']").type("Prik@123")
-        cy.get("button[data-qa='login-button']").click()
+        home.verifyHomePageVisibility()
+        home.getSignupLoginButton()
+        //login test case
+        login.getLoginEmail("pverma@gmail.com")
+        login.getLoginPassword("Prik@123")
+        login.getLoginButton()
         //Verify 'Logged in as username' at top
-        cy.get("div>ul >li:nth-child(10)>a").should("be.visible").and("have.text", ' Logged in as Pverma')
+        home.verifyLoginAsText().and("have.text", ' Logged in as Pverma')
         //add product to the cart
-        cy.get("h2[class='title text-center']").invoke("show").then(() => {
-            cy.get(" div.col-sm-4:nth-child(4) div.product-image-wrapper div.single-products div.product-overlay div.overlay-content > a.btn.btn-default.add-to-cart:nth-child(3)").click({ force: true })
-
-
-        })
-        cy.get("a:nth-child(1) > u:nth-child(1)").click()
-        cy.url().should("include", "/view_cart").then(() => {
-            cy.log("You are at view cart page")
-        })
-        cy.get('.shop-menu > .nav > :nth-child(3) > a').click()
-        cy.get('.col-sm-6 > .btn').click()
-        cy.get('#address_delivery > :nth-child(4)').then((address) => {
-            var addresstext = address.text()
-            expect(addresstext).include("135 New Mohanpura")
-        })
-        cy.get("#product-2").should("contain.text", "Men Tshirt")
+        products.addSecondItemToTheCart()
+        home.getCartButton()
+        cartpage.verifyViewCartPageNavigation()
+        cartpage.getProceedToCheckoutButton()
+        checkoutpage.verifyAddress()
+        checkoutpage.verifyProduct2Order()
         //Enter in Text area
-        cy.get("textarea[name='message']").type("This is my order using Cypress Automation")
-        cy.get(".btn.btn-default.check_out").click()
-        cy.get("input[name='name_on_card']").type("Prikshit")
-        cy.get("input[name='card_number']").type("1234 45677 4342")
-        cy.get("input[placeholder='ex. 311']").clear().type("213")
-        cy.get("input[placeholder='MM']").clear().type("08")
-        cy.get("input[placeholder='YYYY']").clear().type("2025")
-        cy.get("#submit").click().then(() => {
-            cy.wait(2000)
-
-        })
-
-        cy.get(".container .row div[class='col-sm-9 col-sm-offset-1'] p").should("include.text", "Congratulations! Your order has been confirmed!")
-        // Delete account test cases
-        // cy.get("a[href='/delete_account']").click()
-        // cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
-        // cy.get(".btn.btn-primary").click()
-        cy.get("[data-qa='continue-button']").click()
+        checkoutpage.getOrderDescriptionBox("This is my order using Cypress Automation")
+        checkoutpage.getPlaceOrderButton()
+        payment.getNameOnCard("Prikshit")
+        payment.getCardNumber("1234 45677 4342")
+        payment.getCVV("213")
+        payment.getExpirationDate("08")
+        payment.getExpirationYear("2025")
+        payment.getPayAndConfirmOrderButton()
+        payment.verifyOrderConfirmationText()
+        orderplace.getContinueButton()
+        home.getLogoutButton()
     })
     it("17: Remove Products From Cart", function () {
         //Verify home page is visible
-        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
+        home.verifyHomePageVisibility()
+        // Add second product 
+        products.addSecondItemToTheCart()
+        products.getViewCartOnPrompt()
+        cartpage.verifyViewCartPageNavigation()
 
-        // Add product
-        cy.get("h2[class='title text-center']").invoke("show").then(() => {
-            cy.get(" div.col-sm-4:nth-child(4) div.product-image-wrapper div.single-products div.product-overlay div.overlay-content > a.btn.btn-default.add-to-cart:nth-child(3)").click({ force: true })
-
-
-        })
-        cy.get("a:nth-child(1) > u:nth-child(1)").click()
-        cy.url().should("include", "/view_cart").then(() => {
-            cy.log("You are at view cart page")
-        })
-
-        cy.get(".fa.fa-times").click().then(() => {
+        cartpage.getRemoveProductButton().then(() => {
             cy.wait(2000)
         })
-        cy.get(".fa.fa-times").should("not.exist").then(() => {
-            cy.log("product is removed from the cart")
-
-        })
-
+        cartpage.verifyProductRemovedFromCart()
     })
 
-    it("18: View Category Products", function () {
-
+    it.only("18: View Category Products", function () {
+        // Verify Category Text
         cy.get("div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)").should("be.visible").and("have.text", "Category")
         cy.get(" div:nth-child(1) > div:nth-child(1) > h4:nth-child(1) > a:nth-child(1)").click()
+        //click on Women Dress Category
         cy.get("a[href='/category_products/1']").click()
+
         cy.url().should("include", "/category_products/1").then(() => {
             cy.log("You are at Women dress product page")
 

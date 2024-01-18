@@ -1,7 +1,7 @@
 class HomePage {
 
     verifyLoginAsText() {
-        return cy.get("div>ul >li:nth-child(10)>a").should("be.visible").and("have.text", ' Logged in as PVerma')
+        return cy.get("div>ul >li:nth-child(10)>a").should("be.visible")
 
     }
     getDeleteAccountButton() {
