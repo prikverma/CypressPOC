@@ -1,9 +1,9 @@
-name: End-to-End Tests
-on: push
-jobs:
+name: End-to-End Tests #workflow- collection  of Jobs,defined in a YAML file
+on: push #event: any activity in the repo that can trigger a workflow
+jobs: #jobs- collection of steps
   cypress-run:
     runs-on: ubuntu-latest
-    steps:
+    steps: #steps -chained jobs
       - name: Checkout
         uses: actions/checkout@v4.1.1
       #Install npm dependencies, cache them correctly
