@@ -248,7 +248,7 @@ describe("Test Suite", function () {
         cartpage.getRegisterLoginButtonOnPrompt()
         //signup
         login.getSignupName("PVerma")
-        login.getSignupEmail("pvermatest130@gmail.com")
+        login.getSignupEmail("pvermatest1301@gmail.com")
         login.getSignupButton()
         signup.getTitle()
         signup.getPassword("Prik@123")
@@ -503,7 +503,7 @@ describe("Test Suite", function () {
         home.verifyAccountDeleteText()
         home.getAccountDeleteContinueButton()
     })
-    it.only("24: Verify address details in checkout page", function () {
+    it("24: Verify address details in checkout page", function () {
         //Home page visible
         home.verifyHomePageVisibility()
         home.addProduct1FromFeaturesItems()
