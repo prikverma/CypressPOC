@@ -19,7 +19,7 @@ module.exports = defineConfig({
       require('cypress-mochawesome-reporter/plugin')(on);
       on('task', { downloadFile });
     },
-    specPattern: "cypress/integration/**/*.cy.{js,jsx,ts,tsx}",
+    specPattern: "cypress/integration/*.cy.{js,jsx,ts,tsx}",
     downloadsFolder: "cypress/downloads"
   },
 });
