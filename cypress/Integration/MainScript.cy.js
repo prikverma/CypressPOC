@@ -12,20 +12,18 @@ import CheckoutPage from "../PageObjects/CheckoutPage"
 import PaymentPage from "../PageObjects/PaymentPage"
 import OrderPlacePage from "../PageObjects/OrderPlacePage"
 
+const login = new LoginPage()
+const signup = new SignupPage()
+const home = new HomePage()
+const contactus = new ContactUsPage()
+const testcase = new TestCasePage()
+const products = new ProducstsPage()
+const productdetails = new ProducstDetailsPage()
+const cartpage = new CartPage()
+const checkoutpage = new CheckoutPage()
+const payment = new PaymentPage()
+const orderplace = new OrderPlacePage()
 describe("Test Suite", function () {
-
-
-    const login = new LoginPage()
-    const signup = new SignupPage()
-    const home = new HomePage()
-    const contactus = new ContactUsPage()
-    const testcase = new TestCasePage()
-    const products = new ProducstsPage()
-    const productdetails = new ProducstDetailsPage()
-    const cartpage = new CartPage()
-    const checkoutpage = new CheckoutPage()
-    const payment = new PaymentPage()
-    const orderplace = new OrderPlacePage()
     beforeEach(function () {
         cy.visit("https://automationexercise.com/")
     })
