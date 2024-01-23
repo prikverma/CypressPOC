@@ -24,11 +24,24 @@ class CartPage {
         return cy.get("a:nth-child(1) > u:nth-child(1)").click()
     }
     getRemoveProductButton() {
-        return cy.get(".fa.fa-times").click()
+        return cy.get(".fa.fa-times")
     }
     verifyProductRemovedFromCart() {
         return cy.get(".fa.fa-times").should("not.exist").then(() => {
             cy.log("Product has been removed from cart")
+        })
+    }
+    verifyQuantityofItems() {
+        return cy.get(".disabled").should("have.length", "14")
+    }
+    verifyProduct1Text() {
+        return cy.get("a[href='/product_details/1']").should("have.text", "Blue Top")
+
+    }
+    //Test case 24
+    verifyOrderReview() {
+        return cy.get("a[href='/product_details/1']").should("have.text", "Blue Top").then(() => {
+            cy.log("Order reviewed")
         })
     }
 }

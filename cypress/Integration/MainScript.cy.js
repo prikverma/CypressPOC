@@ -390,247 +390,192 @@ describe("Test Suite", function () {
         products.getViewCartOnPrompt()
         cartpage.verifyViewCartPageNavigation()
 
-        cartpage.getRemoveProductButton().then(() => {
+        cartpage.getRemoveProductButton().click().then(() => {
             cy.wait(2000)
         })
         cartpage.verifyProductRemovedFromCart()
     })
 
-    it.only("18: View Category Products", function () {
+    it("18: View Category Products", function () {
         // Verify Category Text
-        cy.get("div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)").should("be.visible").and("have.text", "Category")
-        cy.get(" div:nth-child(1) > div:nth-child(1) > h4:nth-child(1) > a:nth-child(1)").click()
+        products.verifyCategoryText()
+        //click on women tag
+        products.getWomenCategory()
         //click on Women Dress Category
-        cy.get("a[href='/category_products/1']").click()
-
-        cy.url().should("include", "/category_products/1").then(() => {
-            cy.log("You are at Women dress product page")
-
-        })
-        cy.get(".title.text-center").should("have.text", "Women - Dress Products")
+        products.getWomenDress()
+        productdetails.verifyWomenDressPageNavigation()
+        productdetails.verifyWomenDressTitle()
         //left side bar men category click
-        cy.get("div:nth-child(2) >div:nth-child(1) > h4:nth-child(1) > a:nth-child(1)").click()
-        cy.get("a[href='/category_products/6']").click()
-        cy.get(".title.text-center").should("have.text", "Men - Jeans Products").then(() => {
-            cy.log("You are ar Mens' Jeans Product page")
-        })
+        products.getMenCategory()
+        products.getMenJeans()
+        productdetails.verifyMenJeansTitle()
     })
     it("19: View & Cart Brand Products", function () {
-        cy.get("a[href='/products']").click()
-        cy.get("div[class='brands_products'] h2").should("be.visible").and("have.text", "Brands")
-        cy.get("a[href='/brand_products/H&M']").click()
-        cy.url().should("include", "/brand_products/H&M").then(() => {
-            cy.log("User is navigated to brand page")
-        })
-        cy.get(".title.text-center").should("have.text", "Brand - H&M Products").then(() => {
-            cy.log("You are at H&M Products page")
-        })
-        cy.get("a[href='/brand_products/Madame']").click()
-        cy.get(".title.text-center").should("have.text", "Brand - Madame Products").then(() => {
-            cy.log("User is navigated to Brand - Madame products page")
-        })
+        home.getProductsButton()
+        products.getBrandsCategory()
+        products.getHnM()
+        productdetails.verifyHnMPageNavigation()
+        productdetails.verifyHnMTitle()
+        products.getMadame()
+        productdetails.verifyMadameTitle()
     })
     it("20: Search Products and Verify Cart After Login", function () {
-        cy.get("a[href='/products']").click()
-        cy.url().should("include", "/products")
-        cy.get("div.features_items > h2.title.text-center:nth-child(1)").should("have.text", "All Products").then(() => {
-            cy.log("user is navigated to ALL PRODUCTS page successfully")
-        })
-        cy.get("#search_product").type("Top")
-        cy.get("#submit_search").click()
-        cy.get(".title.text-center").should("have.text", "Searched Products")
+        home.getProductsButton()
+        products.verifyProductPageNavigation()
+        products.getSearchProduct("Top")
+        products.getSubmitSearch()
+        products.verifySearchedProductTitle()
         cy.wait(2000)
-        cy.get('.productinfo.text-center a').each(($el) => {
-            var searchText = $el.text()
-            if (searchText.includes("Top")) {
-                cy.get($el).click({ multiple: true })
-            }
-        })
-        cy.get(" li:nth-child(3) > a:nth-child(1)").eq(0).click()
+        products.addSearchedProducts()
+        home.getCartButton()
+        home.getSignupLoginButton()
+        login.getLoginEmail("pshop@gmail.com")
+        login.getLoginPassword("Prik@123")
+        login.getLoginButton()
+        home.getCartButton()
+        //get quantity of added items
+        cartpage.verifyQuantityofItems()
+
+        //add remove multiple product from cart logic here(Pending)
     })
     it("21: Add review on product", function () {
-        cy.get("a[href='/products']").click()
-        cy.get(".title.text-center").should("have.text", "All Products").then(() => {
-            cy.log("You are at all products page")
-        })
-        cy.get("a[href='/product_details/1']").click()
-        cy.get("a[href='#reviews']").should("be.visible").and("have.text", "Write Your Review")
-        cy.get("#name").type("Prikshit")
-        cy.get("#email").type("pverma@gmail.com")
-        cy.get("#review").type("I am writing review in this box for automation testing")
-        cy.get("#button-review").click()
-        cy.get("div[class='alert-success alert'] span").invoke("show").should("have.text", "Thank you for your review.")
-
+        home.getProductsButton()
+        products.verifyProductPageNavigation()
+        products.getViewProduct1Button()
+        productdetails.verifyWriteYourReviewText()
+        productdetails.getReviewName("Prikshit")
+        productdetails.getReviewEmail("pverma@gmail.com")
+        productdetails.getReviewBox("This is a test message")
+        productdetails.getSubmitReviewButton()
+        productdetails.verifyReviewMessage()
     })
     it("22: Add to cart from Recommended items", function () {
         cy.scrollTo('bottom')
-        cy.get("div[class='recommended_items'] h2[class='title text-center']").should("be.visible").and("have.text", "recommended items")
+        home.verifyRecommendedItemsTitle()
         //Cliking on first product on window
-        cy.get("div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) a").eq(0).click({ force: true })
-        cy.get(" p:nth-child(2) > a:nth-child(1) > u:nth-child(1)").click()
-        cy.get("a[href='/product_details/1']").should("have.text", "Blue Top")
+        home.addFirstItemFromRecommendedItems()
+        products.getViewCartOnPrompt()
+        cartpage.verifyProduct1Text()
     })
     it("23: Verify address details in checkout page", function () {
 
-        cy.get('.shop-menu > .nav > :nth-child(4) > a').click()
-        cy.get("input[placeholder='Name']").type("PVerma")
-        cy.get("input[data-qa='signup-email']").type("pvermatest14@gmail.com")
-        cy.get("button[data-qa='signup-button']").click({ multiple: true })
-        cy.get('#id_gender1').check().should("be.checked")
-        cy.get('#password').type("Prik@123")
-        cy.get("select[id='days']").select("8")
-        cy.get("div[id='uniform-months'] > select").select("January")
-        cy.get("div[id='uniform-years'] > select").select("1994")
-        cy.get("#newsletter").check().should("be.checked")
-        cy.get("#optin").check().should("be.checked")
-        cy.get("#first_name").type("Prikshit")
-        cy.get("#last_name").type("Verma")
-        cy.get("#company").type("P.S. Intelegencia Analytics Pvt. Ltd.")
-        cy.get("#address1").type("135 New Mohanpura")
-        cy.get("#address2").type("CCS Colony")
+        home.getSignupLoginButton()
+        //Signing up
+        login.getSignupName("PVerma")
+        login.getSignupEmail("pvermatest14@gmail.com")
+        login.getSignupButton()
+        signup.getTitle()
+        signup.getPassword("Prik@123")
+        signup.getDay("8")
+        signup.getMonth("January")
+        signup.getYear("1994")
+        signup.getNewsletterCheckbox()
+        signup.getSpecialoffersCheckbox()
+        signup.getFirstname("Prikshit")
+        signup.getLastname("Verma")
+        signup.getCompanyName("P.S. Intelegencia Analytics Pvt. Ltd.")
+        signup.getAddress1("135 New Mohanpura")
+        signup.getAddress2("CCS Colony")
         //dropdown select India
-        cy.get("#country").each(($el) => {
+        signup.getCountryDropdown()
 
-            if ($el.text === "India") {
-                cy.wrap($el).select()
-            }
-        })
-
-        cy.get("#state").type("Uttarakhand")
-        cy.get("#city").type("Roorkee")
-        cy.get("#zipcode").type("201306")
-        cy.get("#mobile_number").type("12345678")
-        cy.get('[data-qa="create-account"]').click()
-        cy.get('b').should("be.visible").and("have.text", "Account Created!")
-        cy.get('[data-qa="continue-button"]').click()
-        cy.get("h2[class='title text-center']").invoke("show").then(() => {
-            cy.get(" div.col-sm-4:nth-child(4) div.product-image-wrapper div.single-products div.product-overlay div.overlay-content > a.btn.btn-default.add-to-cart:nth-child(3)").click({ force: true })
-        })
-        cy.get(" p:nth-child(2) > a:nth-child(1) > u:nth-child(1)").click()
-        cy.url().should("include", "/view_cart").then(() => {
-            cy.log("You are ar cart page")
-
-        })
-        cy.get(".btn.btn-default.check_out").click()
-
-        cy.get('#address_delivery > :nth-child(4)').then((address) => {
-            var addresstext1 = address.text()
-            expect(addresstext1).include("135 New Mohanpura")
+        signup.getState("Uttarakhand")
+        signup.getCity("Roorkee")
+        signup.getZipcode("201306")
+        signup.getMobilenumber("12345678")
+        signup.getCreateAccountButton()
+        signup.verifyAccoutCreatedText()
+        signup.getAccountCreatedContinueButton()
+        home.addProductFromTile()
+        cartpage.getRegisterLoginButtonOnPrompt()
+        cartpage.verifyViewCartPageNavigation()
+        cartpage.getProceedToCheckoutButton()
+        //verify delivery address
+        checkoutpage.verifyAddress().then(() => {
             cy.log("the delivery address is same address filled at the time registration of account")
         })
-        cy.get('#address_invoice > :nth-child(4)').then((address2) => {
-            var addresstext2 = address2.text()
-            expect(addresstext2).include("135 New Mohanpura")
+        checkoutpage.verifyInvoiceAddress().then(() => {
             cy.log("the billing address is same address filled at the time registration of account")
         })
 
-
         //Delete account test cases
-        cy.get("a[href='/delete_account']").click()
-        cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
-        cy.get(".btn.btn-primary").click()
+        home.getDeleteAccountButton()
+        home.verifyAccountDeleteText()
+        home.getAccountDeleteContinueButton()
     })
-    it("24: Verify address details in checkout page", function () {
+    it.only("24: Verify address details in checkout page", function () {
         //Home page visible
-        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
-
-        cy.get("h2[class='title text-center']").invoke("show").then(() => {
-            cy.get(" div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(3)").click({ force: true })
-        })
-        cy.get(" a:nth-child(1) > u:nth-child(1)").click()
-        cy.url().should("include", "/view_cart").then(() => {
-            cy.log("You are ar cart page")
-        })
-        cy.get(".btn.btn-default.check_out").click()
+        home.verifyHomePageVisibility()
+        home.addProduct1FromFeaturesItems()
+        products.getViewCartOnPrompt()
+        cartpage.verifyViewCartPageNavigation()
+        cartpage.getProceedToCheckoutButton()
         cy.get("a:nth-child(1) > u:nth-child(1)").click()
         // account creation 
-        cy.get("input[placeholder='Name']").type("PVerma")
-        cy.get("input[data-qa='signup-email']").type("pvermatest24@gmail.com")
-        cy.get("button[data-qa='signup-button']").click({ multiple: true })
-        cy.get('#id_gender1').check().should("be.checked")
-        cy.get('#password').type("Prik@123")
-        cy.get("select[id='days']").select("8")
-        cy.get("div[id='uniform-months'] > select").select("January")
-        cy.get("div[id='uniform-years'] > select").select("1994")
-        cy.get("#newsletter").check().should("be.checked")
-        cy.get("#optin").check().should("be.checked")
-        cy.get("#first_name").type("Prikshit")
-        cy.get("#last_name").type("Verma")
-        cy.get("#company").type("P.S. Intelegencia Analytics Pvt. Ltd.")
-        cy.get("#address1").type("135 New Mohanpura")
-        cy.get("#address2").type("CCS Colony")
+        login.getSignupName("PVerma")
+        login.getSignupEmail("pvermatest67@gmail.com")
+        login.getSignupButton()
+        signup.getTitle()
+        signup.getPassword("Prik@123")
+        signup.getDay("8")
+        signup.getMonth("January")
+        signup.getYear("1994")
+        signup.getNewsletterCheckbox()
+        signup.getSpecialoffersCheckbox()
+        signup.getFirstname("Prikshit")
+        signup.getLastname("Verma")
+        signup.getCompanyName("P.S. Intelegencia Analytics Pvt. Ltd.")
+        signup.getAddress1("135 New Mohanpura")
+        signup.getAddress2("CCS Colony")
         //dropdown select India
-        cy.get("#country").each(($el) => {
-
-            if ($el.text === "India") {
-                cy.wrap($el).select()
-            }
-        })
-
-        cy.get("#state").type("Uttarakhand")
-        cy.get("#city").type("Roorkee")
-        cy.get("#zipcode").type("201306")
-        cy.get("#mobile_number").type("12345678")
-        cy.get('[data-qa="create-account"]').click()
-        cy.get('b').should("be.visible").and("have.text", "Account Created!")
-        cy.get('[data-qa="continue-button"]').click()
-        cy.get("ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)").eq(0).click()
-        cy.get(".btn.btn-default.check_out").click()
-        cy.get('#address_delivery > :nth-child(4)').then((address) => {
-            var addresstext1 = address.text()
-            expect(addresstext1).include("135 New Mohanpura")
-        })
-        cy.get("a[href='/product_details/1']").should("have.text", "Blue Top").then(() => {
-            cy.log("Order reviewed")
-        })
-        cy.get("textarea[name='message']").type("This is my order using Cypress Automation")
-        cy.get(".btn.btn-default.check_out").click()
-        cy.get("input[name='name_on_card']").type("Prikshit")
-        cy.get("input[name='card_number']").type("1234 45677 4342")
-        cy.get("input[placeholder='ex. 311']").clear().type("213")
-        cy.get("input[placeholder='MM']").clear().type("08")
-        cy.get("input[placeholder='YYYY']").clear().type("2025")
-        cy.get("#submit").click().then(() => {
-            cy.wait(2000)
-
-        })
-        cy.get(".container .row div[class='col-sm-9 col-sm-offset-1'] p").should("include.text", "Congratulations! Your order has been confirmed!")
-
-        cy.get('.col-sm-9 > .btn-default').click().then(() => {
-            cy.readFile("cypress/downloads/invoice.txt").should('contain', 'Hi Prikshit Verma, Your total purchase amount is 500. Thank you')
-        })
-
-        cy.get('.col-sm-9 > .btn-default').click()
-
+        signup.getCountryDropdown()
+        signup.getState("Uttarakhand")
+        signup.getCity("Roorkee")
+        signup.getZipcode("201306")
+        signup.getMobilenumber("12345678")
+        signup.getCreateAccountButton()
+        signup.verifyAccoutCreatedText()
+        signup.getAccountCreatedContinueButton()
+        home.getCartButton()
+        checkoutpage.getPlaceOrderButton()
+        checkoutpage.verifyAddress()
+        cartpage.verifyOrderReview()
+        //place order 
+        checkoutpage.getOrderDescriptionBox("This is my order using Cypress Automation")
+        checkoutpage.getPlaceOrderButton()
+        payment.getNameOnCard("Prikshit")
+        payment.getCardNumber("1234 45677 4342")
+        payment.getCVV("213")
+        payment.getExpirationDate("08")
+        payment.getExpirationYear("2025")
+        payment.getPayAndConfirmOrderButton()
+        payment.verifyOrderConfirmationText()
+        //verify Download file data
+        orderplace.verifyFileDownloadData()
+        orderplace.getContinueButton()
         //Delete account test cases
-        cy.get("a[href='/delete_account']").click()
-        cy.get("[data-qa='account-deleted']>b").should("include.text", "Account Deleted!")
-        cy.get(".btn.btn-primary").click()
+        home.getDeleteAccountButton()
+        home.verifyAccountDeleteText()
+        home.getAccountDeleteContinueButton()
 
     })
 
     it("25: Verify Scroll Up using 'Arrow' button and Scroll Down functionality", function () {
-        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
+        home.verifyHomePageVisibility()
         cy.scrollTo('bottom')
-        cy.get("div[class='single-widget'] h2").should("have.text", "Subscription")
-        cy.get(".fa.fa-angle-up").click()
-        cy.window().its("scrollY").should("eq", 0).then(() => {
-            cy.log("page is scrolled up")
-        });
-        cy.get("div[class='item active'] div[class='col-sm-6'] h2").should("have.text", "Full-Fledged practice website for Automation Engineers")
-
+        home.verifySubscriptionText()
+        home.getArrowButton()
+        home.verifyPageScrollUpArrow()
+        home.verifyFullFledgedPracticeText()
     })
 
     it("26: Verify Scroll Up without 'Arrow' button and Scroll Down functionality", function () {
-        cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("have.text", " Home").and("be.visible")
+        home.verifyHomePageVisibility()
         cy.scrollTo('bottom')
-        cy.get("div[class='single-widget'] h2").should("have.text", "Subscription")
+        home.verifySubscriptionText()
         cy.scrollTo('top')
-        cy.window().its("scrollX").should("eq", 0).then(() => {
-            cy.log("page is scrolled up")
-        })
-        cy.get("div[class='item active'] div[class='col-sm-6'] h2").should("have.text", "Full-Fledged practice website for Automation Engineers")
-
+        home.verifyScrollUpWithoutArrow()
+        home.verifyFullFledgedPracticeText()
     })
 })
 

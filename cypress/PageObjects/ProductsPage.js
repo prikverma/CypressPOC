@@ -110,6 +110,42 @@ class ProducstsPage {
             expect(Number(prodQuanttext)).to.equal(4)
         })
     }
+    verifyCategoryText() {
+        cy.get("div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)").should("be.visible").and("have.text", "Category")
+
+    }
+    getWomenCategory() {
+        cy.get(" div:nth-child(1) > div:nth-child(1) > h4:nth-child(1) > a:nth-child(1)").click()
+
+    }
+    getWomenDress() {
+        cy.get("a[href='/category_products/1']").click()
+    }
+    getMenCategory() {
+        return cy.get("div:nth-child(2) >div:nth-child(1) > h4:nth-child(1) > a:nth-child(1)").click()
+    }
+    getMenJeans() {
+        return cy.get("a[href='/category_products/6']").click()
+    }
+    getBrandsCategory() {
+        return cy.get("div[class='brands_products'] h2").should("be.visible").and("have.text", "Brands")
+    }
+    getHnM() {
+        return cy.get("a[href='/brand_products/H&M']").click()
+    }
+    getMadame() {
+        return cy.get("a[href='/brand_products/Madame']").click()
+    }
+    addSearchedProducts() {
+        return cy.get('.productinfo.text-center a').each(($el) => {
+
+            cy.get($el).click({ multiple: true, force: true })
+            cy.get(" button.btn.btn-success.close-modal.btn-block").click()
+        })
+    }
+    verifySearchedProductTitle() {
+        return cy.get(".title.text-center").should("have.text", "Searched Products")
+    }
 }
 
 export default ProducstsPage;

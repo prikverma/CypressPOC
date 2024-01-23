@@ -13,7 +13,7 @@ module.exports = defineConfig({
     screenshotOnRunFailure: true,
 
   },
-  retries: 1,
+  // retries: 1,
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);

@@ -13,14 +13,16 @@ class HomePage {
 
     }
     getAccountDeleteContinueButton() {
-        return cy.get("div>a[class='btn btn-primary']").click()
+        return cy.get("div>a[class='btn btn-primary']").click().then(() => {
+            cy.log("Account deleted Successfully ")
+        })
     }
     verifyHomePageVisibility() {
         return cy.get("header[id='header'] li:nth-child(1) a:nth-child(1)").should("be.visible").and("have.text", " Home")
 
     }
     getSignupLoginButton() {
-        return cy.get("a[href='/login']").click()
+        return cy.get("a[href='/login']").click({ multiple: true, force: true })
     }
     getLogoutButton() {
         return cy.get("a[href='/logout']").click()
@@ -58,6 +60,38 @@ class HomePage {
     getCartButton() {
         return cy.get("div>ul[class='nav navbar-nav'] :nth-child(3) >a").click()
     }
+    verifyRecommendedItemsTitle() {
+        return cy.get("div[class='recommended_items'] h2[class='title text-center']").should("be.visible").and("have.text", "recommended items")
 
+    }
+    addFirstItemFromRecommendedItems() {
+        return cy.get("div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) a").eq(0).click({ force: true })
+    }
+    addProductFromTile() {
+        return cy.get("h2[class='title text-center']").invoke("show").then(() => {
+            cy.get(" div.col-sm-4:nth-child(4) div.product-image-wrapper div.single-products div.product-overlay div.overlay-content > a.btn.btn-default.add-to-cart:nth-child(3)").click({ force: true })
+        })
+    }
+    addProduct1FromFeaturesItems() {
+        return cy.get("h2[class='title text-center']").invoke("show").then(() => {
+            cy.get(" div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(3)").click({ force: true })
+        })
+    }
+    getArrowButton() {
+        return cy.get(".fa.fa-angle-up").click()
+    }
+    verifyPageScrollUpArrow() {
+        return cy.window().its("scrollY").should("eq", 0).then(() => {
+            cy.log("page is scrolled up")
+        });
+    }
+    verifyFullFledgedPracticeText() {
+        return cy.get("div[class='item active'] div[class='col-sm-6'] h2").should("have.text", "Full-Fledged practice website for Automation Engineers")
+    }
+    verifyScrollUpWithoutArrow() {
+        return cy.window().its("scrollX").should("eq", 0).then(() => {
+            cy.log("page is scrolled up")
+        })
+    }
 }
 export default HomePage;
