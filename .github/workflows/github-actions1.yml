@@ -7,6 +7,6 @@ jobs: #jobs- collection of steps
       - name: Checkout
         uses: actions/checkout@v4.1.1
       #Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+      # and run all Cypress test
       - name: Cypress run
         uses: cypress-io/github-action@v6.6.1
