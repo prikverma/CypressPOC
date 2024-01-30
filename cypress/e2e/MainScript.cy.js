@@ -28,7 +28,7 @@ describe("Test Suite", function () {
         cy.visit("https://automationexercise.com/")
     })
 
-    it("1. Register User", function () {
+    it.only("1. Register User", function () {
 
         // Verify home page visibility
         home.verifyHomePageVisibility()
@@ -141,7 +141,7 @@ describe("Test Suite", function () {
         home.getContactUsButton()
         contactus.verifyGetInTouchText()
         contactus.getName("Prikshit")
-        contactus.getEmail("pverma6@gmail.com")
+        contactus.getEmail("pverma66@gmail.com")
         contactus.getSubject("I want to automate this site")
         contactus.getMessage("This is a meggage for you. That I am a good person.")
         contactus.getUploadButton()
@@ -246,7 +246,7 @@ describe("Test Suite", function () {
         cartpage.getRegisterLoginButtonOnPrompt()
         //signup
         login.getSignupName("PVerma")
-        login.getSignupEmail("pvermatest1301@gmail.com")
+        login.getSignupEmail("pvermatest13@gmail.com")
         login.getSignupButton()
         signup.getTitle()
         signup.getPassword("Prik@123")
