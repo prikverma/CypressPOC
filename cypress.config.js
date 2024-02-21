@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress');
 const { downloadFile } = require('cypress-downloadfile/lib/addPlugin');
-module.exports = defineConfig({
+const eyesPlugin = require('@applitools/eyes-cypress')
+module.exports = eyesPlugin(defineConfig(defineConfig({
   projectId: 'zwm98y',
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
@@ -22,4 +23,6 @@ module.exports = defineConfig({
     specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
     downloadsFolder: "cypress/downloads"
   },
-});
+})));
+
+

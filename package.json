@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/prikverma/CypressPOC#readme",
   "devDependencies": {
-    "cypress": "^13.6.3",
+    "@applitools/eyes-cypress": "^3.41.0",
+    "cypress": "^13.6.5",
     "cypress-downloadfile": "^1.2.3",
     "cypress-mochawesome-reporter": "^3.7.0"
   }
